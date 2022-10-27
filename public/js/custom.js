@@ -29,25 +29,53 @@ $(document).ready(function () {
             {data: 'phone'},
             {data: 'creditlimit'},
             {data: 'level'},
-            {data: 'customerImage'},
             {data: null,
                 render: function (data, type, row) {
-                    return "<a href='#' data-bs-toggle='modal' data-bs-target='#editItemModal' id='editbtn' data-id=" +
-                        data.item_id + "><i class='fa-solid fa-pen-to-square' aria-hidden='true' style='font-size:24px' ></i></a>  <a href='#' class='deletebtn' data-id=" + data.item_id + "><i class='fa-sharp fa-solid fa-trash' style='font-size:24px; color:red'></a></i>";
+                    return "<a href='#' data-bs-toggle='modal' data-bs-target='#editcustomModal' id='editbtn' data-id=" +
+                        data.customer_id + "><i class='fa-solid fa-pen-to-square' aria-hidden='true' style='font-size:24px' ></i></a>  <a href='#' class='deletebtn' data-id=" + data.customer_id + "><i class='fa-sharp fa-solid fa-trash' style='font-size:24px; color:red'></a></i>";
                 },
             },
         ]
         
     })
 
+
+$("#myFormSubmit").on("click", function (e){
+
+    e.preventDefault();
+    var data = $("#cform")[0];
+    console.log(data);
+
+    let formData = new FormData(data);
+
+    console.log(formData);
+
+    for(var pair of formData.entries()){
+       console.log(pair[0] + ',' + pair[1]);
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/api/customer",
+        data: formData,
+        contentType: false,
+        processData: false,
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        dataType: "json",
+
+        success:function(data){
+            console.log(data);
+            $("#customModal").modal("hide");
+
+            var $ctable = $('#ctable').DataTable();
+            $ctable.row.add(data.customers).draw(false);
+        },
+        error: function (error){
+            console.log(error);
+        }
+    })
+
 });
-
-
-
-
-
-
-
 
 
     //delete record
@@ -161,6 +189,8 @@ $("#updatebtn").on("click", function (e) {
             console.log(error);
         },
     });
+});
+
 });
 
 

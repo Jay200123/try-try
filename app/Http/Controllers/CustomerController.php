@@ -45,29 +45,26 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        // $customer = Customer::create($request->all());
-        // return response()->json($customer);
-
-        $customer = new Customer;
-        $customer->title = $request->title;
-        $customer->user_id = $request->user_id;
-        $customer->lname = $request->lname;
-        $customer->fname = $request->fname;
-        $customer->addressline = $request->addressline;
-        $customer->town = $request->town;
-        $customer->zipcode = $request->zipcode;
-        $customer->phone = $request->phone;
-        $customer->creditlimit = $request->creditlimit;
-        $customer->level = $request->level;
+{
+        $customers = new Customer;
+        $customers->title = $request->title;
+        $customers->user_id = $request->user_id;
+        $customers->lname = $request->lname;
+        $customers->fname = $request->fname;
+        $customers->addressline = $request->addressline;
+        $customers->town = $request->town;
+        $customers->zipcode = $request->zipcode;
+        $customers->phone = $request->phone;
+        $customers->creditlimit = $request->creditlimit;
+        $customers->level = $request->level;
 
         $files = $request->file('uploads');
 
-        $customer->customerImage = 'images/'.$files->getClientOriginalName();
-        $customer->save();
+        $customers->customerImage = 'images/'.$files->getClientOriginalName();
+        $customers->save();
 
         Storage::put('public/images/'.$files->getClientOriginalName(), file_get_contents($files));
-        return response()->json(["success" => "Customer's data recorded successfully.", "customer" => $customer, "status" => 200]);
+        return response()->json(["success" => "Customer's data recorded successfully.", "customers" => $customers, "status" => 200]);
 
     } 
 

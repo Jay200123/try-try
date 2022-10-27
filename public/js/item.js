@@ -26,8 +26,7 @@ $(document).ready(function () {
             {data: 'cost_price'},
             {data: null,
                 render: function (data, type, row) {
-                    return "<a href='#' data-bs-toggle='modal' data-bs-target='#editItemModal' id='editbtn' data-id=" +
-                        data.item_id + "><i class='fa-solid fa-pen-to-square' aria-hidden='true' style='font-size:24px' ></i></a>  <a href='#' class='deletebtn' data-id=" + data.item_id + "><i class='fa-sharp fa-solid fa-trash' style='font-size:24px; color:red'></a></i>";
+                    return "<a href='#' class='editBtn' id='editbtn' data-id=" + data.item_id + "><i class='fa-regular fa-pen-to-square' aria-hidden='true' style='font-size:24px' ></i></a>  <a href='#' class='deletebtn' data-id=" + data.item_id + "><i class='fa-regular fa-solid fa-trash' style='font-size:24px; color:red'></a></i>";
                 },
             },
         ]
@@ -36,7 +35,6 @@ $(document).ready(function () {
     
     $("#itemSubmit").on("click", function (e) {
         e.preventDefault();
-        // var data = $("#iform").serialize();
         var data = $("#iform")[0];
         console.log(data);
 
@@ -65,6 +63,60 @@ $(document).ready(function () {
             },
 
             error:function (error){
+                console.log(error);
+            }
+        })
+    });
+
+    $('#itable tbody').on('click', 'a.editBtn', function(e){
+        e.preventDefault();
+        // var id = $('#itemId').val();
+        var id = $(this).data('id');
+        $('#itemModal').modal('show');
+
+        $.ajax({
+            type: "GET",
+            url: "/api/item" + id + '/edit',
+            // url: '/api/item/${id}',
+            headers: {'X-CSRF-TOKEN': $('meta [name="csrf-token"]').attr('content') },
+            dataType: "json",
+            success:function(data){
+                console.log(data);
+                $('#itemId').val(data.item_id);
+                $('#desc').val(data.description);
+                $('#sell_price').val(data.sell_price);
+                $('#cost_price').val(data.cost_price);
+            },
+
+            error: function (error){
+                console.log(error);
+            }
+        })
+    });
+
+    $('#itemUpdate').on('click', function(e){
+
+        e.preventDefault();
+        var id = $('$itemId').val()
+        console.log(id);
+        var table = $('#itable').DataTable();
+        var cRow = $("tr td:eq("+ id +")").closest('tr');
+        var data = $('#iform').serialize();
+
+        $.ajax({
+            type: "PUT",
+            url: '/api/item/${id}',
+            data: data,
+            headers: {'X-CSRF-TOKEN': $('meta [name="csrf-token"]').attr('content') },
+            dataType: "json",
+
+            success: function(data){
+                console.log(data);
+                $('#itemModal').modal("hide");
+
+                table.row(cRow).data(data).invalidate().draw(false);
+            },
+            error: function(error){
                 console.log(error);
             }
         })
@@ -105,6 +157,7 @@ $(document).ready(function () {
         $('#editItemModal').on('hidden.bs.modal', function (e) {
             $("#updateformItem").trigger("reset");
             $("#itemid").remove();
+
     });
         
         $("#updatebtnItem").on('click', function(e) {

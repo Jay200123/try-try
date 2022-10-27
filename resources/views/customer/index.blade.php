@@ -19,7 +19,6 @@
           <th>Phone</th>
           <th>Credit Limit</th>
           <th>Level</th>
-          <th>Image</th>
           <th>Action</th>
           </tr>
       </thead>
@@ -92,7 +91,7 @@
 
               <div class="form-group"> 
                 <label for="customerImage" class="control-label">Image</label>
-                <input type="file" class="form-control" id="uploads" name="uploads" />
+                <input type="file" class="form-control" id="customerImage" name="uploads" />
                </div>
             </form>
           </div>

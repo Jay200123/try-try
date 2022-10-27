@@ -43,4 +43,13 @@ class ItemController extends Controller
         return response()->json(["success" => "item created successfully.", "item" => $item, "status" => 200]);
 
     }
+
+    public function edit(Request $request, $id){
+
+        $item = Item::findOrFail($id);
+        $item = $item->update($request->all());
+
+        $item = Item::findOrFail($id);
+        return response()->json($item);
+    }
 }
