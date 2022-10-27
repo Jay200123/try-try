@@ -42,84 +42,12 @@ $(document).ready(function () {
 
 });
 
-// inserting data
- $("#myFormSubmit").on("click", function (e) {
-        e.preventDefault();
-        var data = $("#cform")[0];
-        console.log(data);
 
-        let formData = new FormData(data);
 
-        console.log(formData);
-        for (var pair of formData.entries()){
-            console.log(pair[0] + ',' + pair[1]);
-        }
 
-        $.ajax({
-            type: "POST",
-            url: "/api/customer",
-            data:formData,
-            contentType: false,
-            processData: false,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            dataType:"json", 
 
-            success:function(data){
-                   console.log(data);
-                   $("#customModal").modal("hide");
 
-                   var $ctable = $('#ctable').DataTable();
-                   $ctable.row.add(data.customer).draw(false); 
-            },
 
-            error:function (error){
-                console.log(error);
-            }
-        })
-    });
-
-// storing data
-// $("#myFormSubmit").on("click", function (e) {
-//         e.preventDefault();
-//         var data = $("#cform").serialize();
-//         console.log(data);
-//         $.ajax({
-//             type: "POST",
-//             url: "/api/customer",
-//             data: data,
-//             headers: {
-//                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"), },
-//             dataType: "json",
-//             success: function (data) {
-//                 console.log(data);
-
-//                 $("#myModal").each(function () {
-//                     $(this).modal("hide");
-//                 });
-
-//                 var tr = $("<tr>");
-//                 tr.append($("<td>").html(data.customer_id));
-//                 tr.append($("<td>").html(data.title));
-//                 tr.append($("<td>").html(data.user_id));
-//                 tr.append($("<td>").html(data.lname));
-//                 tr.append($("<td>").html(data.fname));
-//                 tr.append($("<td>").html(data.addressline));
-//                 tr.append($("<td>").html(data.town));
-//                 tr.append($("<td>").html(data.zipcode));
-//                 tr.append($("<td>").html(data.phone));
-//                 tr.append($("<td>").html(data.creditlimit));
-//                 tr.append($("<td>").html(data.level));
-//                 tr.append( "<td align='center'><a href='#' data-bs-toggle='modal' data-bs-target='#editModal' id='editbtn' data-id=" + data.customer_id + "><i class='fa fa-pencil-square-o' aria-hidden='true' style='font-size:24px' ></a></i></td>"
-//                 );
-//                 tr.append("<td><a href='#'  class='deletebtn' data-id=" + data.customer_id + "><i  class='fa fa-trash-o' style='font-size:24px; color:red' ></a></i></td>");
-//                 $("#cbody").prepend(tr);
-//             },
-
-//             error: function (error) {
-//                 console.log(error);
-//             },
-//         });
-//     });
 
 
     //delete record
