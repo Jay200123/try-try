@@ -76,14 +76,15 @@ $(document).ready(function () {
 
         $.ajax({
             type: "GET",
-            url: "/api/item" + id + '/edit',
+            url: '/api/item/' + id +  '/edit', 
             // url: '/api/item/${id}',
             headers: {'X-CSRF-TOKEN': $('meta [name="csrf-token"]').attr('content') },
             dataType: "json",
             success:function(data){
                 console.log(data);
                 $('#itemId').val(data.item_id);
-                $('#desc').val(data.description);
+                $('#description').val(data.description);
+                $('#title').val(data.title);
                 $('#sell_price').val(data.sell_price);
                 $('#cost_price').val(data.cost_price);
             },
@@ -97,7 +98,7 @@ $(document).ready(function () {
     $('#itemUpdate').on('click', function(e){
 
         e.preventDefault();
-        var id = $('$itemId').val()
+        var id = $('#itemId').val()
         console.log(id);
         var table = $('#itable').DataTable();
         var cRow = $("tr td:eq("+ id +")").closest('tr');
